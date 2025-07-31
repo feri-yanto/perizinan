@@ -1,7 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 from .models import Accounts
 
 class RegisterForms(forms.ModelForm):
@@ -20,12 +21,28 @@ class RegisterForms(forms.ModelForm):
          },
       }
    
-   def save(self, commit = True):
-      instance = self.instance
+   def save(self, commit = False):
+      instance = super().save(commit)
       instance.set_password(self.cleaned_data['password'])
-      return super().save(commit)
+      instance.save()
 
-class LoginForms(AuthenticationForm):
-   error_messages = {
-      'invalid_login': _('Login gagal, periksa nama pengguna dan sandi anda!'),
-   }
+class LoginForms(forms.Form):
+   username = forms.CharField(max_length=100, required=True, widget=forms.TextInput())
+   password = forms.CharField(min_length=8, required=True, widget=forms.PasswordInput())
+
+   def __init__(self, request=None, *args, **kwargs):
+      super().__init__(*args, **kwargs)
+      self.request = request
+      self.valid_user = None
+   
+   def clean(self):
+      cleaned_data = super().clean()
+      user = authenticate(self.request, **cleaned_data)
+      if user is None:
+         raise ValidationError(message='Login gagal, periksa nama pengguna dan sandi anda!', code='login_invalid')
+      if user.is_active:
+         self.valid_user = user
+      else:
+         raise ValidationError(message='Akun anda belum aktif', code='inactive')
+
+      return cleaned_data
