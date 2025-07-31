@@ -1,5 +1,13 @@
 {% extends '../dashboard/base.html' %}
 
 {% block content %}
-<p>Profile pages</p>
-{% endblock content %}
+  <p>Profile pages</p>
+
+  <div>
+    {% if object.profiles %}
+      {{ object.profiles }}
+    {% else %}
+      <a href="{% url 'profiles:create' %}">create</a>
+    {% endif %}
+  </div>
+{% endblock %}

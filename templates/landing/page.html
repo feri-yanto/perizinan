@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>landing</title>
-    <link rel="shortcut icon" href="{% static 'images/icon/favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'images/icon/favicon.ico' %}" type="image/x-icon" />
   </head>
   <body>
     <h1>Landing page</h1>
@@ -18,8 +18,10 @@
         <button type="submit">Logout</button>
       </form>
     {% endif %}
-    <div>
-      <a href="{% url 'profiles:preview' %}">Profile</a>
-    </div>
+    {% if user.is_authenticated %}
+      <div>
+        <a href="{% url 'profiles:preview' user.id %}">Profile</a>
+      </div>
+    {% endif %}
   </body>
 </html>

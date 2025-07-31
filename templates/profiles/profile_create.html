@@ -1,0 +1,10 @@
+{% extends '../dashboard/base.html' %}
+
+{% block content %}
+  <p>Create profiles</p>
+  <form method="post">
+   {% csrf_token %}
+   {{ form.as_div }}
+   <button type="submit">Simpan</button>
+  </form>
+{% endblock %}
