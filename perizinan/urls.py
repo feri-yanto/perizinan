@@ -24,4 +24,6 @@ urlpatterns = [
     path('', view=landing_page, name='landing'),
     # auth url
     path('authentication/', include('authentication.urls', namespace='auth')),
+    # profiles url
+    path('profile/', include('account_profiles.urls', namespace='profiles')),
 ]
