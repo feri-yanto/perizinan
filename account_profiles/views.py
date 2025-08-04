@@ -27,4 +27,9 @@ class CreateProfile(CreateView):
    form_class = ProfileForms
    
    def get_success_url(self):
-      return f'http://localhost:8000/profile/preview/{self.request.id}'
+      return f'http://localhost:8000/profile/preview/{self.request.user.id}'
+   
+   def get_form_kwargs(self):
+      kwargs = super().get_form_kwargs()
+      kwargs['user'] = self.request.user
+      return kwargs
