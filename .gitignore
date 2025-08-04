@@ -10,6 +10,7 @@ __pycache__/
 
 # Media and Static files
 media/
+staticfiles/
 
 # Local settings
 myproject/local_settings.py
