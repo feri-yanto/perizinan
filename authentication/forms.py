@@ -25,6 +25,7 @@ class RegisterForms(forms.ModelForm):
       instance = super().save(commit)
       instance.set_password(self.cleaned_data['password'])
       instance.save()
+      return instance
 
 class LoginForms(forms.Form):
    username = forms.CharField(max_length=100, required=True, widget=forms.TextInput())

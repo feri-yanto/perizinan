@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, FormView
 from django.contrib.auth import login
+from django.views.decorators.cache import never_cache
+from django.utils.decorators import method_decorator
 from .forms import RegisterForms, LoginForms
 
 # Create your views here.
@@ -10,6 +12,9 @@ class RegisterView(CreateView):
    form_class = RegisterForms
    success_url = '/authentication/login'
 
+@method_decorator(decorator=[
+   never_cache,
+], name='dispatch')
 class UserLoginView(FormView):
    http_method_names = ['get', 'post']
    template_name = 'auth/login.html'
